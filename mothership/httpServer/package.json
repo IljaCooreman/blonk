@@ -1,7 +1,7 @@
 {
   "name": "http-server",
   "version": "0.1.0",
-  "description": "repo for all blond shenaniganza",
+  "description": "http server for the blond shenanziga",
   "main": "index.js",
   "author": "Ilja Cooreman",
   "license": "MIT",

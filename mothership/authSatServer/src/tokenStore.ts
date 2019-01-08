@@ -1,4 +1,4 @@
-import { TokenObject } from "../../types/typedefs";
+import { TokenObject } from "../types/typedefs";
 
 class Tokenstore {
   public tokens: TokenObject[] = [];
