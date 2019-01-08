@@ -1,0 +1,28 @@
+{
+  "name": "blonk",
+  "version": "0.1.0",
+  "description": "repo for all blond shenaniganza",
+  "main": "index.js",
+  "author": "Ilja Cooreman",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "redis": "^2.8.0",
+    "typescript": "^3.2.2",
+    "uuid": "^3.3.2",
+    "ws": "^6.1.2"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/redis": "^2.8.10",
+    "@types/uuid": "^3.4.4",
+    "@types/ws": "^6.0.1",
+    "nodemon": "^1.18.8",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.13.0"
+  },
+  "scripts": {
+    "dev": "nodemon index.ts"
+  }
+}
