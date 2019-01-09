@@ -26,6 +26,7 @@ export default function HttpServer() {
         };
         const id = Object.keys(tokens).find(key => JSON.stringify(tokens[key]) === JSON.stringify(req.body.entryCode));
         if (id) {
+          res.status(201);
           res.send({ token: 'abcd1234' });
         } else {
           res.status(401);

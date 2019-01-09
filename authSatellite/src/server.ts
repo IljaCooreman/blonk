@@ -19,8 +19,9 @@ interface DTO {
 }
 
 console.log('this thing is on');
+const host = '192.168.1.32'
 
-const ws = new WebSocket(`ws://${'localhost'}:9001`);
+const ws = new WebSocket(`ws://${host}:9001`);
 ws.on('open', function open() {
   console.log('connection open');
   const dataObject: DTO = {

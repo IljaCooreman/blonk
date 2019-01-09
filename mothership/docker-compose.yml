@@ -24,3 +24,4 @@ services:
     volumes:
       - /app/node_modules
       - ./httpServer:/app
+    restart: unless-stopped
