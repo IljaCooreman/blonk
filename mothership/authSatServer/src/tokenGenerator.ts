@@ -1,7 +1,7 @@
 export function tokenGenerator(cb: (token: number[]) => void) {
   return setInterval(() => {
     cb(generateToken());
-  }, 10000)
+  }, 20000)
 };
 
 function generateToken(arrLength: number = 5): number[] {

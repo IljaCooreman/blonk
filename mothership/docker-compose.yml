@@ -3,7 +3,7 @@ services:
   redis-server:
     image: 'redis'
 
-  mothership:
+  auth-sat-server:
     build:
       context: ./authSatServer
       dockerfile: Dockerfile.dev
@@ -14,3 +14,13 @@ services:
       - /app/node_modules
       - ./authSatServer:/app
     restart: unless-stopped
+
+  http-server:
+    build:
+      context: ./httpServer
+      dockerfile: Dockerfile.dev
+    ports:
+      - "9000:9000"
+    volumes:
+      - /app/node_modules
+      - ./httpServer:/app

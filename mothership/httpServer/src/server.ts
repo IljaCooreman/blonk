@@ -1,54 +1,45 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
+import { isArray } from 'util';
 
 // import * as WebSocket from 'ws';
 // import { messageSystem } from './MessageSystem';
 import { redisClient } from './redis';
 
-export default class HttpServer {
-  constructor() {
-    const app = express();
-    app.use(bodyParser.json());
-    app.post('/auth', (req, res) => {
-      console.log('body', req);
+export default function HttpServer() {
+
+  const app = express();
+  app.use(bodyParser.json());
+  app.post('/auth', (req, res) => {
+    try {
+      if (!req.body || !req.body.entryCode || !isArray(JSON.parse(req.body.entryCode))) {
+        res.status(400);
+        res.send('D.E.N.I.E.D., Denied! No code provided.');
+      }
+      if (!redisClient.connected) { throw new Error('Server is not connected to Redis.') };
       redisClient.hgetall('satTokens', (err, tokens) => {
-        if (!tokens) { throw new Error('No satellite tokens found') };
-        const id = Object.keys(tokens).find(key => tokens[key] === JSON.stringify(req.body));
+        if (!tokens) {
+          res.status(409);
+          res.send('No satellites connected right now.');
+          return;
+        };
+        const id = Object.keys(tokens).find(key => JSON.stringify(tokens[key]) === JSON.stringify(req.body.entryCode));
         if (id) {
           res.send({ token: 'abcd1234' });
         } else {
-          res.send('failed');
+          res.status(401);
+          res.send('D.E.N.I.E.D., Denied! Wrong code. Try again');
         }
-      })
-    });
+      });
+    } catch (e) {
+      res.status(500);
+      res.send(e.message);
+    }
+  });
 
-    const server = http.createServer(app);
-    server.listen(process.env.PORT || 9000, () => {
-      console.log(`Server started on port 9000`);
-    });
-  }
+  const server = http.createServer(app);
+  server.listen(process.env.PORT || 9000, () => {
+    console.log(`Server started on port 9000`);
+  });
 }
-
-// // initialize a simple http server
-// const server = http.createServer(app);
-
-// // initialize the WebSocket server instance
-// const wss = new WebSocket.Server({ server, clientTracking: true });
-
-
-// wss.on('connection', (ws: WebSocket) => {
-//   console.log(wss.clients.size, 'connected clients')
-//   ws.on('open', () => {
-//     console.log('new connection opened')
-//   })
-
-//   ws.on('message', (message: string) => {
-//     const dto = messageSystem.parse(message);
-//   });
-// });
-
-// // start our server
-// server.listen(process.env.PORT || 9000, () => {
-//   console.log(`Server started on port 9000`);
-// });
