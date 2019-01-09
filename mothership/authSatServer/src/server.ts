@@ -1,4 +1,4 @@
-// import * as redis from 'redis';
+// tslint:disable:no-console
 import * as uuid from 'uuid';
 import * as WebSocket from 'ws';
 
