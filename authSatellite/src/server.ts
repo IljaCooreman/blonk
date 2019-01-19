@@ -2,7 +2,7 @@
 import * as uuid from 'uuid';
 import * as WebSocket from 'ws';
 
-import { GROUP, SERVER_HOST, SERVER_PORT } from '../config';
+import { GROUP, SERVER_HOST, SERVER_PORT } from './config';
 
 enum DeviceType {
   authSatellite = 'satellite',
