@@ -1,7 +1,8 @@
 // tslint:disable:no-console
 import * as uuid from 'uuid';
 import * as WebSocket from 'ws';
-import { SERVER_HOST, SERVER_PORT } from '../config';
+
+import { GROUP, SERVER_HOST, SERVER_PORT } from '../config';
 
 enum DeviceType {
   authSatellite = 'satellite',
@@ -28,7 +29,7 @@ export const init = () => {
   ws.on('open', function open() {
     console.log('connection open');
     const dataObject: DTO = {
-      body: uuid.v4(),
+      body: `${GROUP}:${uuid.v4()}`,
       purpose: Purpose.handshake,
       type: DeviceType.authSatellite,
     }
