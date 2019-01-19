@@ -1,5 +1,7 @@
+// tslint:disable:no-console
 import * as uuid from 'uuid';
 import * as WebSocket from 'ws';
+import { SERVER_HOST, SERVER_PORT } from '../config';
 
 enum DeviceType {
   authSatellite = 'satellite',
@@ -18,24 +20,26 @@ interface DTO {
   type: DeviceType
 }
 
-console.log('this thing is on');
-const host = '192.168.1.32'
+export const init = () => {
 
-const ws = new WebSocket(`ws://${host}:9001`);
-ws.on('open', function open() {
-  console.log('connection open');
-  const dataObject: DTO = {
-    body: uuid.v4(),
-    purpose: Purpose.handshake,
-    type: DeviceType.authSatellite,
-  }
-  ws.send(JSON.stringify(dataObject));
-});
+  console.log('this thing is on');
 
-ws.on('message', function incoming(data: string) {
-  console.log(data);
-});
+  const ws = new WebSocket(`ws://${SERVER_HOST}:${SERVER_PORT}`);
+  ws.on('open', function open() {
+    console.log('connection open');
+    const dataObject: DTO = {
+      body: uuid.v4(),
+      purpose: Purpose.handshake,
+      type: DeviceType.authSatellite,
+    }
+    ws.send(JSON.stringify(dataObject));
+  });
 
-ws.on('error', (error) => {
-  console.log(error)
-})
+  ws.on('message', function incoming(data: string) {
+    console.log(data);
+  });
+
+  ws.on('error', (error) => {
+    console.log(error)
+  })
+}
