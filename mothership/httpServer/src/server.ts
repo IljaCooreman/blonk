@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
 import { isArray } from 'util';
+import * as uuid from 'uuid';
 
 // import * as WebSocket from 'ws';
 // import { messageSystem } from './MessageSystem';
@@ -24,14 +25,18 @@ export default function HttpServer() {
           res.send('No satellites connected right now.');
           return;
         };
-        const id = Object.keys(tokens).find(key => JSON.stringify(tokens[key]) === JSON.stringify(req.body.entryCode));
-        if (id) {
-          // generate token
+        const satelliteId = Object.keys(tokens).find(key => JSON.stringify(tokens[key]) === JSON.stringify(req.body.entryCode));
+        if (satelliteId) {
+          // store token in redis. satid: <connected
+          const token = uuid.v4();
+          redisClient.hset('userTokens', token, satelliteId);
 
-          // store token in redis
-          
           res.status(201);
-          res.send({ token: 'abcd1234' });
+          res.send({
+            group: satelliteId.split(':')[0],
+            satelliteId,
+            token,
+          });
         } else {
           res.status(401);
           res.send('D.E.N.I.E.D., Denied! Wrong code. Try again');

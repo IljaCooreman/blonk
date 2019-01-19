@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 import * as WebSocket from 'ws';
 
-import { Purpose, DTO } from '../types/typedefs';
+import { DTO, Purpose } from '../types/typedefs';
 import { messageSystem } from './MessageSystem';
 import { redisClient } from './redis';
 import { tokenGenerator } from './tokenGenerator';
