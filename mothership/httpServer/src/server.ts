@@ -6,20 +6,24 @@ import * as uuid from 'uuid';
 
 // import * as WebSocket from 'ws';
 // import { messageSystem } from './MessageSystem';
-import { redisClient } from './redis';
+import { publisher } from './redis';
+import { isAuthorized } from './utils/auth';
+import { errorHandler } from './utils/errorHandler';
 
 export default function HttpServer() {
 
   const app = express();
   app.use(bodyParser.json());
+  app.use(errorHandler);
+
   app.post('/auth', (req, res) => {
     try {
       if (!req.body || !req.body.entryCode || !isArray(JSON.parse(req.body.entryCode))) {
         res.status(400);
         res.send('D.E.N.I.E.D., Denied! No code provided.');
       }
-      if (!redisClient.connected) { throw new Error('Server is not connected to Redis.') };
-      redisClient.hgetall('satTokens', (err, tokens) => {
+      if (!publisher.connected) { throw new Error('Server is not connected to Redis.') };
+      publisher.hgetall('satTokens', (err, tokens) => {
         if (!tokens) {
           res.status(409);
           res.send('No satellites connected right now.');
@@ -27,9 +31,9 @@ export default function HttpServer() {
         };
         const satelliteId = Object.keys(tokens).find(key => JSON.stringify(tokens[key]) === JSON.stringify(req.body.entryCode));
         if (satelliteId) {
-          // store token in redis. satid: <connected
+          // store token in redis.
           const token = uuid.v4();
-          redisClient.hset('userTokens', token, satelliteId);
+          publisher.set(token, satelliteId, 'EX', 2 * 60 * 60); // token expires after 2hours (2 * 3600 sec)
 
           res.status(201);
           res.send({
@@ -46,6 +50,11 @@ export default function HttpServer() {
       res.status(500);
       res.send(e.message);
     }
+  });
+
+  app.get('/', isAuthorized, (req, res, next) => {
+    res.status(200).json({ status: 'looks alll riiiight!' });
+    next();
   });
 
   const server = http.createServer(app);
