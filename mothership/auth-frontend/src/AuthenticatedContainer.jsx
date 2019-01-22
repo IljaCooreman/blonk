@@ -21,6 +21,7 @@ export default class AuthenticatedContainer extends Component {
         })
       })
   }
+    
   render() {
     return (
       <div>

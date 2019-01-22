@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CircleButton from './CircleButton';
 import { postData } from '../lib/requests';
 
+
 export default class AuthContainer extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +14,7 @@ export default class AuthContainer extends Component {
 
   componentDidMount() {
     this.sendRequest(this.createEmptyToken())
+
   }
 
   createEmptyToken() {
@@ -41,6 +43,7 @@ export default class AuthContainer extends Component {
       }
       return;
     };
+
     const data = await response.json();
     console.log(data)
     if (!data || !data.satelliteId || !data.token) return;
@@ -64,6 +67,7 @@ export default class AuthContainer extends Component {
     if (serverError) return (
       <div className={`circle-button-container`}>{serverError}</div>
     );
+
     return (
       <div className={`circle-button-container`}>
         {
