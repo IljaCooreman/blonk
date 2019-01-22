@@ -34,15 +34,14 @@ export default class AuthContainer extends Component {
   };
 
   async validateAuthResponse(response) {
-    if (!response.ok) {
-      if (response.status >= 500 || response.status === 404) {
-        console.log(response)
-        response.json().then(data => {
-          this.setState({ serverError: data.error });
-        })
-      }
+
+    if (response.status >= 500 || response.status === 404) {
+      console.log(response)
+      response.json().then(data => {
+        this.setState({ serverError: data.error });
+      });
       return;
-    };
+    }
 
     const data = await response.json();
     console.log(data)
