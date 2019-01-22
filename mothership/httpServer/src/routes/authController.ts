@@ -18,7 +18,7 @@ export const authController = async (req: Request, res: Response, next: NextFunc
   const tokens = await asyncHgetall('satTokens');
   if (!tokens) {
     return res
-      .status(409)
+      .status(500)
       .json({ error: 'No satellites connected right now.' });
   };
 
