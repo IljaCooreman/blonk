@@ -9,7 +9,7 @@ import { errorHandler } from './middleware/errorHandler';
 import { authController } from './routes/authController';
 
 
-export default function HttpServer() {
+export default function apiServer() {
 
   const app = express();
 
