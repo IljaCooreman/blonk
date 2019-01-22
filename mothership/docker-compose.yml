@@ -25,3 +25,13 @@ services:
       - /app/node_modules
       - ./httpServer:/app
     restart: unless-stopped
+
+  auth-frontend:
+    build:
+      context: ./auth-frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - ./auth-frontend:/app

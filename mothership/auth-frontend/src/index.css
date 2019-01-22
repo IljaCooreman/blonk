@@ -14,7 +14,8 @@ code {
     monospace;
 }
 .circle-button-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .circle-button {

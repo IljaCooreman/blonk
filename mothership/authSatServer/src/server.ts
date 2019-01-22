@@ -13,7 +13,6 @@ export default class AuthSatelliteServer {
     console.log('Auth server started on port 9001');
 
     wss.on('connection', ws => {
-      console.log('New device connected');
       let id = '';
 
       ws.on('message', (message: string) => {
@@ -21,11 +20,12 @@ export default class AuthSatelliteServer {
         if (parsedMessage.purpose === Purpose.handshake) {
           id = parsedMessage.body;
         }
+        console.log('New device succesfully connected. id: ', id);
       })
 
       redisClient.on('connect', () => { console.log('redis connected') });
+
       const timeout = tokenGenerator(token => {
-        console.log(id)
         redisClient.hset('satTokens', id, JSON.stringify(token));
         ws.send(messageSystem.encode(Purpose.token, token));
         // redisClient.hgetall('satTokens', (err, tokens) => {
