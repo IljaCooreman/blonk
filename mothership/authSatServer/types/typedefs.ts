@@ -17,6 +17,6 @@ export interface DTO {
 
 export interface TokenObject {
   id: string,
-  token: number[],
+  token: Array<(0 | 1)>,
   connStartTime: Date,
 }

@@ -12,7 +12,7 @@ export default class AuthContainer extends Component {
   }
 
   createEmptyToken() {
-    return [0, 0, 0, 0, 0];
+    return new Array(9).fill(0);
   }
 
   handleButtonClick(i) {
