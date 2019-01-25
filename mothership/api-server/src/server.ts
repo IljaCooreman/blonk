@@ -7,6 +7,7 @@ import { isAuthorized } from './middleware/auth';
 import { cors } from './middleware/cors';
 import { errorHandler } from './middleware/errorHandler';
 import { authController } from './routes/authController';
+import connectedusers from './routes/connectedUsers';
 
 
 export default function apiServer() {
@@ -23,6 +24,8 @@ export default function apiServer() {
     res.status(200).json({ status: 'looks alll riiiight!' });
     next();
   });
+
+  app.get('/connectedUsers', isAuthorized, connectedusers.get)
 
   app.use(errorHandler);
 

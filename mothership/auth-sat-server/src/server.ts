@@ -25,9 +25,9 @@ export default class AuthSatelliteServer {
 
       redisClient.on('connect', () => { console.log('redis connected') });
 
-      const timeout = tokenGenerator(token => {
-        redisClient.hset('satTokens', id, JSON.stringify(token));
-        ws.send(messageSystem.encode(Purpose.token, token));
+      const timeout = tokenGenerator(loginCode => {
+        redisClient.hset('satTokens', id, JSON.stringify(loginCode));
+        ws.send(messageSystem.encode(Purpose.token, loginCode));
         // redisClient.hgetall('satTokens', (err, tokens) => {
         //   console.log('tokens:', tokens);
         // })

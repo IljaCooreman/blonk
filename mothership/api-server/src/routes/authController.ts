@@ -14,7 +14,6 @@ export const authController = async (req: Request, res: Response, next: NextFunc
 
   if (!publisher.connected) { next(new Error('Server is not connected to Redis.')) };
 
-
   const tokens = await asyncHgetall('satTokens');
   if (!tokens) {
     return res
@@ -30,7 +29,8 @@ export const authController = async (req: Request, res: Response, next: NextFunc
   if (satelliteId) {
     // store token in redis.
     const token = uuid.v4();
-    publisher.set(token, satelliteId, 'EX', 2 * 60 * 60); // token expires after 2hours (2 * 3600 sec)
+    publisher.hmset(`connectedUsers:${token}`, 'satelliteId', satelliteId, 'token', token);
+    publisher.expire(`connectedUsers:${token}`, 2 * 3600);// token expires after 2hours (2 * 3600 sec)
 
     res.status(201);
     res.json({
