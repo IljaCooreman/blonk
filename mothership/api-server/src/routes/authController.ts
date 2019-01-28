@@ -29,7 +29,7 @@ export const authController = async (req: Request, res: Response, next: NextFunc
   if (satelliteId) {
     // store token in redis.
     const token = uuid.v4();
-    publisher.hmset(`connectedUsers:${token}`, 'satelliteId', satelliteId, 'token', token);
+    publisher.hmset(`connectedUsers:${token}`, 'token', token, 'satelliteId', satelliteId, 'group', satelliteId.split(':')[0], 'wsServerId', '');
     publisher.expire(`connectedUsers:${token}`, 2 * 3600);// token expires after 2hours (2 * 3600 sec)
 
     res.status(201);

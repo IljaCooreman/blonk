@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { fetchData } from './lib/requests';
+
+import WsConnect from './WsConnect';
 
 export default class AuthenticatedContainer extends Component {
   constructor(props) {
@@ -10,23 +11,14 @@ export default class AuthenticatedContainer extends Component {
   }
 
   componentDidMount() {
-    fetchData('http://localhost:9000', this.props.token)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        console.log(data)
-        this.setState({
-          response: data
-        })
-      })
   }
-    
+
   render() {
     return (
       <div>
         ingelogd!!! {this.props.token}
         <div>data;{this.state.response.status}</div>
+        <WsConnect token={this.props.token} />
       </div>
     )
   }

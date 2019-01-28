@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "9001:9001"
-      - "4000:4000"
     volumes:
       - /app/node_modules
       - ./auth-sat-server:/app
@@ -21,6 +20,7 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "9000:9000"
+      - "5555:5555"
     volumes:
       - /app/node_modules
       - ./api-server:/app
