@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CircleButton from './CircleButton';
 import { postData } from '../lib/requests';
+import { URL } from '../config';
 
 
 export default class AuthContainer extends Component {
@@ -29,7 +30,7 @@ export default class AuthContainer extends Component {
   }
 
   sendRequest(token) {
-    postData('http://localhost:9000/auth', { entryCode: token })
+    postData(`${URL}/api/auth`, { entryCode: token })
       .then(this.validateAuthResponse);
   };
 

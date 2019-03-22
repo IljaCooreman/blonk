@@ -1,4 +1,4 @@
-export function tokenGenerator(cb: (token: number[]) => void) {
+export function tokenGenerator(cb: (token: number[]) => void): NodeJS.Timeout {
   return setInterval(() => {
     cb(generateToken());
   }, 20000)

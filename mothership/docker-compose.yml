@@ -1,7 +1,10 @@
 version: '3'
 services:
+
   redis-server:
     image: 'redis'
+  mongo:
+    image: 'mongo:3.6'
 
   auth-sat-server:
     build:
@@ -25,13 +28,34 @@ services:
       - /app/node_modules
       - ./api-server:/app
     restart: unless-stopped
+    depends_on:
+      - mongo
 
-  auth-frontend:
+  frontend:
     build:
-      context: ./auth-frontend
+      context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     volumes:
       - /app/node_modules
-      - ./auth-frontend:/app
+      - ./frontend:/app
+    environment:
+      - URL
+      - WS_PORT
+      - WS_URL
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+    depends_on: 
+      - frontend
+      - auth-sat-server
+      - api-server
+      - redis-server
+      - mongo
+    restart: unless-stopped

@@ -23,11 +23,10 @@ interface DTO {
 
 export const init = () => {
 
-  console.log('this thing is on');
 
   const ws = new WebSocket(`ws://${SERVER_HOST}:${SERVER_PORT}`);
   ws.on('open', function open() {
-    console.log('connection open');
+    console.log('connection open. Waiting for first token...');
     const dataObject: DTO = {
       body: `${GROUP}:${uuid.v4()}`,
       purpose: Purpose.handshake,
