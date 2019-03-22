@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import uuid from 'uuid';
 import './App.css';
 
-import { GROUP, SERVER_HOST, SERVER_PORT } from './config';
-import { createSocket, error, handshake } from './lib/createSocket';
+import { createSocket } from './lib/createSocket';
 
 export function App() {
   const [code, setCode] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
